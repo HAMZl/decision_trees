@@ -325,8 +325,10 @@ def deviation(value,parent_pos,parent_neg):
         return 0
 
     #Insert code here
-
-
+    exp_pos = parent_pos * ((value.pos + value.neg)/(parent_pos + parent_neg))
+    exp_neg = parent_neg * ((value.pos + value.neg)/(parent_pos + parent_neg))
+    deviation = ((value.pos - exp_pos) ** 2 / exp_pos)
+    deviation += ((value.neg - exp_neg) ** 2 / exp_neg)
     return (deviation)
 
 def replaceFork(parent,leaf):
@@ -408,7 +410,7 @@ def evaluate(predict,dataset, examples = None):
                 #Insert code here
                 #calculate p_value using the stats.chi2.cdf function.
                 #The degree of freedom (num of variable) is the number of branches at the parent.
-
+                p_value = 1 - stats.chi2.cdf(DELTA, len(parent.branches))
 
 
                 print("chisquare-score is:", DELTA, " and p value is:", p_value)
@@ -556,8 +558,8 @@ def learn_tennis_tree(filename):
 
 
     #insert code here
-
-
+    dataSet = DataSet(name=filename, target='Play')
+    tree = DecisionTreeLearner(dataSet)
     return(dataSet,tree)
 
 #TASK 2
@@ -574,7 +576,9 @@ def test_tennis_tree(filename):
     error = 0
 
     #insert code here
-
+    dataSet, tree = learn_tennis_tree(filename)
+    trainSet, testSet = train_test_split(dataSet, test_split=0.2)
+    error = err_ratio(tree, testSet)
     return(trainSet,testSet,tree,error)
 
 # TASK 3a
@@ -584,7 +588,7 @@ def genSyntheticTrainSet():
     data = None
 
     #insert code here
-
+    data = SyntheticRestaurant(200)
 
     return(data)
 
@@ -595,7 +599,7 @@ def genSyntheticTestSet():
     data = None
 
     #insert code here
-
+    data = SyntheticRestaurantTest()
 
     return (data)
 
@@ -612,8 +616,14 @@ def train_restaurant_tree(trainSet, testSet, N=200):
 
 
     #insert code here
-
-
+    tree = DecisionTreeLearner(trainSet)
+    error = err_ratio(tree, testSet)
+    for i in range(1,N+1):
+       dataSet, splitTestSet = train_test_split(trainSet, test_split=(1-(i/N)))
+       minTree = DecisionTreeLearner(dataSet)
+       if error == err_ratio(minTree, testSet):
+        samples_required = i
+        break
     return(tree,samples_required)
 
 #TASK 3d
@@ -625,8 +635,8 @@ def train_tree(trainSet, testSet):
     error = 0
 
     #insert code here
-
-
+    tree = DecisionTreeLearner(trainSet)
+    error = err_ratio(tree, testSet)
     return(tree,error)
 
 #TASK 4a
@@ -636,7 +646,7 @@ def genPruneTestSet():
     data = None
 
     #insert code here
-
+    data = SyntheticRestaurantPruneTest(1000)
 
     return(data)
 
@@ -650,8 +660,9 @@ def prune_tree(tree,testSet):
     delta = 1.0
 
     #insert code here
-
-
+    while(p_value < 0.05):
+        p_value,delta,error_rate = evaluate(tree,testSet)
+        clear_counts(tree)
     return(testSet,p_value,delta,tree,error_rate)
 
 
