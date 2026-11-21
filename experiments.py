@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 from matplotlib.patches import FancyBboxPatch  # noqa: E402
 
-import COMP2611_DT as dt  # noqa: E402
+import decision_tree as dt  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMG = os.path.join(HERE, 'images')
@@ -291,8 +291,8 @@ def pruning_experiment(metrics, seeds=range(20)):
         for i, n in enumerate(noises)}
 
 
-def coursework_trees(metrics):
-    """The exact Task 3/4 pipeline from the coursework, drawn before and after pruning."""
+def restaurant_pipeline(metrics):
+    """The exact Task 3/4 pipeline, drawn before and after pruning."""
     train, test = dt.genSyntheticTrainSet(), dt.genSyntheticTestSet()
     tree, err = dt.train_tree(train, test)
     _, samples = dt.train_restaurant_tree(train, test)
@@ -312,7 +312,7 @@ def coursework_trees(metrics):
               'restaurant_tree_pruned.png',
               '{} nodes, depth {}; error on 1,000 attribute-noise examples {:.1%} -> {:.1%}'.format(
                   dt.tree_size(pruned), dt.tree_depth(pruned), before, after))
-    metrics['coursework'] = dict(
+    metrics['restaurant_pipeline'] = dict(
         train_tree_nodes=size_before, train_tree_depth=dt.tree_depth(tree),
         test_error=round(err, 4), samples_required=samples,
         pruned_tree_nodes=dt.tree_size(pruned), prune_set_error_before=round(before, 4),
@@ -322,7 +322,7 @@ def coursework_trees(metrics):
 if __name__ == '__main__':
     metrics = {}
     tennis_experiments(metrics)
-    coursework_trees(metrics)
+    restaurant_pipeline(metrics)
     learning_curve_experiment(metrics)
     pruning_experiment(metrics)
     with open(os.path.join(RES, 'metrics.json'), 'w') as f:

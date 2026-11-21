@@ -11,7 +11,7 @@
     "loocv_error_tree": 0.2143,
     "loocv_error_plurality": 0.3571
   },
-  "coursework": {
+  "restaurant_pipeline": {
     "train_tree_nodes": 22,
     "train_tree_depth": 6,
     "test_error": 0.01,

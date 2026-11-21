@@ -1,11 +1,11 @@
 """
-COMP2611 - Decision Trees
-=========================
+Decision Trees
+==============
 
 ID3-style decision tree learning (information gain splits) with
 chi-squared (significance) pruning, built on the AIMA ``learning.py`` code.
 
-Run ``python COMP2611_DT.py`` for a text report of every coursework task, or
+Run ``python decision_tree.py`` for a text report of every task, or
 ``python experiments.py`` to regenerate the figures in ``images/``.
 """
 
@@ -567,7 +567,7 @@ def SyntheticRestaurantTest(n=100, seed=4000, noise=0.0):
     """
     Test examples labelled by the true tree (optionally with label noise).
 
-    NOTE: the original coursework version never applied the true tree, so
+    NOTE: the original version never applied the true tree, so
     its labels were drawn uniformly at random, and its noise branch
     (``rand >= 1.1``, plus ``==`` instead of ``=``) could never run.
     """
@@ -593,7 +593,7 @@ def SyntheticRestaurantPruneTest(n=100, seed=4000):
 
 
 # ______________________________________________________________________________
-# Coursework tasks
+# Tasks
 
 # TASK 1
 def learn_tennis_tree(filename):

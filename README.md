@@ -4,9 +4,10 @@
 
 A pure-Python decision tree learner (no scikit-learn) that grows trees with
 **information gain (ID3)** and prunes them with **chi-squared significance
-tests**. It was built for the University of Leeds COMP2611 *Artificial
-Intelligence* module on top of the [AIMA](https://github.com/aimacode/aima-python)
-`learning.py` code, then extended with proper evaluation, bug fixes, tests and
+tests**. It started as an Artificial Intelligence course project based on
+Russell & Norvig's *Artificial Intelligence: A Modern Approach* (AIMA), built on
+the [aima-python](https://github.com/aimacode/aima-python) `learning.py` code,
+then extended with proper evaluation, bug fixes, tests and
 the experiments below.
 
 <p align="center">
@@ -33,7 +34,7 @@ cd decision_trees
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-python COMP2611_DT.py     # text report for each coursework task
+python decision_tree.py  # text report for each task
 python experiments.py     # regenerate images/ and results/metrics.json (~1 min)
 pytest -q                 # 11 unit tests
 ```
@@ -104,7 +105,7 @@ pruning step never sees the test set.
 On clean data, pruning costs essentially nothing. Under noise, it more than
 halves the error.
 
-### 4. The coursework pipeline, visualised
+### 4. The restaurant pipeline, visualised
 
 <details>
 <summary><b>Ground-truth tree, learned tree, and pruned tree</b> (click to expand)</summary>
@@ -113,19 +114,19 @@ The tree used to generate the synthetic data (AIMA Figure 19.3):
 
 <img src="images/restaurant_true_tree.png" alt="Ground-truth AIMA restaurant decision tree">
 
-What ID3 learns from the coursework's 200 examples. It reaches 1.0% test
+What ID3 learns from 200 synthetic examples. It reaches 1.0% test
 error, but notice the different structure under `30-60` and `10-30`:
 
 <img src="images/restaurant_tree_unpruned.png" alt="Decision tree learned from 200 synthetic restaurant examples, 22 nodes">
 
-After pruning with the coursework's 1,000-example attribute-noise set, the
+After pruning with a 1,000-example attribute-noise set, the
 deep `Bar → Raining` chain disappears:
 
 <img src="images/restaurant_tree_pruned.png" alt="The learned restaurant tree after chi-squared pruning, 18 nodes">
 
 </details>
 
-## Fixes to the original coursework code
+## Fixes to the original code
 
 While writing this up, I found and fixed several bugs that made the original
 numbers misleading:
@@ -142,12 +143,12 @@ numbers misleading:
 | Newly pruned leaves had zero counts | A parent couldn't be tested in the same pass | Pruned leaves inherit the fork's counts |
 | CSV paths relative to the working directory | Crashed outside the repo folder | Resolved relative to the module |
 
-Every function keeps the name and signature the coursework requires.
+Every task function keeps its original name and signature.
 
 ## Project structure
 
 ```
-COMP2611_DT.py        Learner, pruning, data generators, coursework tasks 1-4
+decision_tree.py      Learner, pruning, data generators, tasks 1-4
 experiments.py        Every figure + results/metrics.json (seeded, reproducible)
 utils.py              AIMA helper functions
 tennis.csv            Quinlan's 14-example Play Tennis data
